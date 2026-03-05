@@ -197,7 +197,10 @@ header .accent {
     color: var(--text-secondary);
     background: var(--cell-fixed);
     cursor: default;
+    pointer-events: none;
+    /* Disables all clicks on fixed cells */
 }
+
 
 .cell.error {
     color: var(--error-color) !important;

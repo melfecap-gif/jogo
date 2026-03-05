@@ -166,10 +166,12 @@ class SudokuGame {
     }
 
     selectCell(cell) {
+        if (cell.classList.contains('fixed')) return;
         if (this.selectedCell) this.selectedCell.classList.remove('selected');
         this.selectedCell = cell;
         this.selectedCell.classList.add('selected');
     }
+
 
     updateCellValue(cell, val) {
         const idx = parseInt(cell.dataset.index);
