@@ -66,6 +66,18 @@ class SudokuGame {
         this.generatePuzzle(counts[this.difficulty]);
         this.renderGrid();
 
+        // Check for blocks that might already be complete
+        for (let i = 0; i < 81; i += 3) {
+            if (i % 9 === 0 || i % 9 === 3 || i % 9 === 6) {
+                this.checkBlockCompletion(i);
+            }
+            if (i % 27 === 18 && i % 9 === 6) {
+                // Adjusting i to skip rows would be better but this works for a quick check
+            }
+        }
+        // More robust way to check all 9 blocks
+        [0, 3, 6, 27, 30, 33, 54, 57, 60].forEach(idx => this.checkBlockCompletion(idx));
+
         this.selectionScreen.classList.add('hidden');
         this.playScreen.classList.remove('hidden');
     }
@@ -177,6 +189,7 @@ class SudokuGame {
         if (val === this.solution[idx]) {
             cell.classList.remove('error');
             cell.classList.add('success');
+            this.checkBlockCompletion(idx);
         } else {
             cell.classList.remove('success');
             cell.classList.add('error');
@@ -184,6 +197,34 @@ class SudokuGame {
 
         this.checkWin();
     }
+
+    checkBlockCompletion(idx) {
+        const row = Math.floor(idx / 9);
+        const col = idx % 9;
+        const blockRow = Math.floor(row / 3) * 3;
+        const blockCol = Math.floor(col / 3) * 3;
+
+        const blockIndices = [];
+        for (let r = 0; r < 3; r++) {
+            for (let c = 0; c < 3; c++) {
+                blockIndices.push((blockRow + r) * 9 + (blockCol + c));
+            }
+        }
+
+        const isBlockComplete = blockIndices.every(i => this.grid[i] === this.solution[i]);
+
+        if (isBlockComplete) {
+            blockIndices.forEach(i => {
+                const cell = this.gridElement.children[i];
+                cell.classList.add('success', 'fixed');
+                cell.classList.remove('selected');
+            });
+            if (this.selectedCell && this.selectedCell.classList.contains('fixed')) {
+                this.selectedCell = null;
+            }
+        }
+    }
+
 
 
     useHint() {
@@ -211,6 +252,7 @@ class SudokuGame {
             this.hintsRemaining--;
             this.updateUI();
 
+            this.checkBlockCompletion(randomIdx);
             this.checkWin();
 
         }
