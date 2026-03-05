@@ -141,6 +141,7 @@ header .accent {
 .grid-9x9 {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: repeat(9, 1fr);
     gap: 1px;
     background: var(--grid-line);
     border: 3px solid var(--block-line);
