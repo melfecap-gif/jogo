@@ -60,7 +60,7 @@ class SudokuGame {
     }
 
     startGame() {
-        const counts = { 'easy': 40, 'medium': 30, 'hard': 22 };
+        const counts = { 'easy': 42, 'medium': 32, 'hard': 24 };
         this.hintsRemaining = 3;
         this.updateUI();
 
