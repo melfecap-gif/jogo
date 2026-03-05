@@ -33,6 +33,7 @@ class SudokuGame {
         // Controls
         document.getElementById('reset-btn').addEventListener('click', () => this.startGame());
         document.getElementById('new-game-btn').addEventListener('click', () => this.resetToMenu());
+        document.getElementById('back-to-menu-btn').addEventListener('click', () => this.resetToMenu());
         document.getElementById('hint-btn').addEventListener('click', () => this.useHint());
 
         // Keyboard support

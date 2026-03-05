@@ -11,6 +11,8 @@
     --cell-bg: rgba(255, 255, 255, 0.05);
     --cell-selected: rgba(56, 189, 248, 0.2);
     --cell-fixed: rgba(255, 255, 255, 0.1);
+    --grid-line: rgba(255, 255, 255, 0.2);
+    --block-line: rgba(255, 255, 255, 0.4);
 }
 
 * {
@@ -140,8 +142,8 @@ header .accent {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 1px;
-    background: var(--glass-border);
-    border: 2px solid var(--glass-border);
+    background: var(--grid-line);
+    border: 3px solid var(--block-line);
     margin: 2rem auto;
     width: 100%;
     aspect-ratio: 1 / 1;
@@ -250,7 +252,7 @@ header .accent {
 
 /* Thick borders for 3x3 blocks */
 .cell:nth-child(3n) {
-    border-right: 2px solid var(--glass-border);
+    border-right: 2px solid var(--block-line);
 }
 
 .cell:nth-child(9n) {
@@ -259,7 +261,7 @@ header .accent {
 
 .cell:nth-child(n+19):nth-child(-n+27),
 .cell:nth-child(n+46):nth-child(-n+54) {
-    border-bottom: 2px solid var(--glass-border);
+    border-bottom: 2px solid var(--block-line);
 }
 
 /* Stats and information */
