@@ -200,15 +200,21 @@ header .accent {
 }
 
 .cell.error {
-    color: var(--error-color);
-    background: rgba(239, 68, 68, 0.15);
+    color: var(--error-color) !important;
+    background: rgba(239, 68, 68, 0.15) !important;
     animation: shake 0.4s ease-in-out;
+}
+
+.cell.success {
+    color: var(--success-color) !important;
+    background: rgba(16, 185, 129, 0.15) !important;
 }
 
 .cell.hint-revealed {
     animation: reveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     color: var(--success-color);
 }
+
 
 @keyframes shake {
 

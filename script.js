@@ -45,6 +45,8 @@ class SudokuGame {
                     this.updateCellValue(this.selectedCell, e.key);
                 } else if (e.key === 'Backspace' || e.key === 'Delete') {
                     this.updateCellValue(this.selectedCell, '');
+                } else if (e.key === 'Enter') {
+                    this.validateCell(this.selectedCell);
                 }
             }
         });
@@ -162,15 +164,27 @@ class SudokuGame {
         cell.innerText = val;
         this.grid[idx] = val === '' ? 0 : parseInt(val);
 
-        // Validation (Simple visual error feedback)
-        if (val !== '' && parseInt(val) !== this.solution[idx]) {
-            cell.classList.add('error');
-        } else {
+        // Clear previous validation status when typing
+        cell.classList.remove('error', 'success');
+    }
+
+    validateCell(cell) {
+        const idx = parseInt(cell.dataset.index);
+        const val = this.grid[idx];
+
+        if (val === 0) return; // Nothing to validate
+
+        if (val === this.solution[idx]) {
             cell.classList.remove('error');
+            cell.classList.add('success');
+        } else {
+            cell.classList.remove('success');
+            cell.classList.add('error');
         }
 
         this.checkWin();
     }
+
 
     useHint() {
         if (this.hintsRemaining <= 0) return;
