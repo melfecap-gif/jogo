@@ -46,8 +46,6 @@ class SudokuGame {
                     this.updateCellValue(this.selectedCell, e.key);
                 } else if (e.key === 'Backspace' || e.key === 'Delete') {
                     this.updateCellValue(this.selectedCell, '');
-                } else if (e.key === 'Enter') {
-                    this.validateCell(this.selectedCell);
                 }
             }
         });
@@ -181,6 +179,11 @@ class SudokuGame {
 
         // Clear previous validation status when typing
         cell.classList.remove('error', 'success');
+
+        // Automatically validate if a number was entered
+        if (val !== '') {
+            this.validateCell(cell);
+        }
     }
 
     validateCell(cell) {
@@ -196,6 +199,15 @@ class SudokuGame {
         } else {
             cell.classList.remove('success');
             cell.classList.add('error');
+
+            // Automatically clear the cell after a short delay if it's incorrect
+            setTimeout(() => {
+                // Only clear if it's still marked as error (hasn't been changed by user)
+                if (cell.classList.contains('error')) {
+                    this.updateCellValue(cell, '');
+                    cell.classList.remove('error');
+                }
+            }, 800);
         }
 
         this.checkWin();
