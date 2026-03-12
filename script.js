@@ -186,16 +186,12 @@ class SudokuGame {
         const numVal = val === '' ? 0 : parseInt(val);
         this.grid[idx] = numVal;
 
-        // Clear previous validation status when typing
+        // Limpa status anterior
         cell.classList.remove('error', 'success');
 
-        // Se for o número correto, trava a célula imediatamente
-        if (numVal !== 0 && numVal === this.solution[idx]) {
-            cell.classList.add('success', 'fixed');
-            cell.classList.remove('selected');
-            if (this.selectedCell === cell) this.selectedCell = null;
-            this.checkBlockCompletion(idx);
-            this.checkWin();
+        // Validação instantânea
+        if (numVal !== 0) {
+            this.validateCell(cell);
         }
     }
 
