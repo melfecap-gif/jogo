@@ -23,18 +23,31 @@ class SudokuGame {
 
     init() {
         // Difficulty Buttons
-        document.querySelectorAll('.btn-difficulty').forEach(btn => {
-            btn.addEventListener('click', () => {
-                this.difficulty = btn.dataset.difficulty;
-                this.startGame();
+        const diffButtons = document.querySelectorAll('.btn-difficulty');
+        if (diffButtons.length > 0) {
+            diffButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const diff = btn.dataset.difficulty;
+                    if (diff) {
+                        this.difficulty = diff;
+                        this.startGame();
+                    }
+                });
             });
-        });
+        }
 
         // Controls
-        document.getElementById('reset-btn').addEventListener('click', () => this.startGame());
-        document.getElementById('new-game-btn').addEventListener('click', () => this.resetToMenu());
-        document.getElementById('back-to-menu-btn').addEventListener('click', () => this.resetToMenu());
-        document.getElementById('hint-btn').addEventListener('click', () => this.useHint());
+        const elements = {
+            'reset-btn': () => this.startGame(),
+            'new-game-btn': () => this.resetToMenu(),
+            'back-to-menu-btn': () => this.resetToMenu(),
+            'hint-btn': () => this.useHint()
+        };
+
+        for (const [id, action] of Object.entries(elements)) {
+            const el = document.getElementById(id);
+            if (el) el.addEventListener('click', action);
+        }
 
         // Keyboard support
         window.addEventListener('keydown', (e) => {
@@ -54,33 +67,26 @@ class SudokuGame {
     }
 
     resetToMenu() {
-        this.victoryModal.classList.add('hidden');
-        this.playScreen.classList.add('hidden');
-        this.selectionScreen.classList.remove('hidden');
+        if (this.victoryModal) this.victoryModal.classList.add('hidden');
+        if (this.playScreen) this.playScreen.classList.add('hidden');
+        if (this.selectionScreen) this.selectionScreen.classList.remove('hidden');
     }
 
     startGame() {
         const counts = { 'easy': 42, 'medium': 32, 'hard': 24 };
+        const clues = counts[this.difficulty] || 32;
         this.hintsRemaining = 3;
         this.updateUI();
 
-        this.generatePuzzle(counts[this.difficulty]);
+        this.generatePuzzle(clues);
         this.renderGrid();
 
         // Check for blocks that might already be complete
-        for (let i = 0; i < 81; i += 3) {
-            if (i % 9 === 0 || i % 9 === 3 || i % 9 === 6) {
-                this.checkBlockCompletion(i);
-            }
-            if (i % 27 === 18 && i % 9 === 6) {
-                // Adjusting i to skip rows would be better but this works for a quick check
-            }
-        }
-        // More robust way to check all 9 blocks
         [0, 3, 6, 27, 30, 33, 54, 57, 60].forEach(idx => this.checkBlockCompletion(idx));
 
-        this.selectionScreen.classList.add('hidden');
-        this.playScreen.classList.remove('hidden');
+        if (this.selectionScreen) this.selectionScreen.classList.add('hidden');
+        if (this.playScreen) this.playScreen.classList.remove('hidden');
+        if (this.victoryModal) this.victoryModal.classList.add('hidden');
     }
 
     updateUI() {
@@ -177,10 +183,20 @@ class SudokuGame {
     updateCellValue(cell, val) {
         const idx = parseInt(cell.dataset.index);
         cell.innerText = val;
-        this.grid[idx] = val === '' ? 0 : parseInt(val);
+        const numVal = val === '' ? 0 : parseInt(val);
+        this.grid[idx] = numVal;
 
         // Clear previous validation status when typing
         cell.classList.remove('error', 'success');
+
+        // Se for o número correto, trava a célula imediatamente
+        if (numVal !== 0 && numVal === this.solution[idx]) {
+            cell.classList.add('success', 'fixed');
+            cell.classList.remove('selected');
+            if (this.selectedCell === cell) this.selectedCell = null;
+            this.checkBlockCompletion(idx);
+            this.checkWin();
+        }
     }
 
     validateCell(cell) {
@@ -191,7 +207,9 @@ class SudokuGame {
 
         if (val === this.solution[idx]) {
             cell.classList.remove('error');
-            cell.classList.add('success');
+            cell.classList.add('success', 'fixed'); // Adiciona 'fixed' para travar
+            cell.classList.remove('selected');
+            if (this.selectedCell === cell) this.selectedCell = null;
             this.checkBlockCompletion(idx);
         } else {
             cell.classList.remove('success');
