@@ -177,20 +177,10 @@ class SudokuGame {
     updateCellValue(cell, val) {
         const idx = parseInt(cell.dataset.index);
         cell.innerText = val;
-        const numVal = val === '' ? 0 : parseInt(val);
-        this.grid[idx] = numVal;
+        this.grid[idx] = val === '' ? 0 : parseInt(val);
 
         // Clear previous validation status when typing
         cell.classList.remove('error', 'success');
-
-        // Se for o número correto, trava a célula imediatamente
-        if (numVal !== 0 && numVal === this.solution[idx]) {
-            cell.classList.add('success', 'fixed');
-            cell.classList.remove('selected');
-            if (this.selectedCell === cell) this.selectedCell = null;
-            this.checkBlockCompletion(idx);
-            this.checkWin();
-        }
     }
 
     validateCell(cell) {
@@ -201,9 +191,7 @@ class SudokuGame {
 
         if (val === this.solution[idx]) {
             cell.classList.remove('error');
-            cell.classList.add('success', 'fixed'); // Adiciona 'fixed' para travar
-            cell.classList.remove('selected');
-            if (this.selectedCell === cell) this.selectedCell = null;
+            cell.classList.add('success');
             this.checkBlockCompletion(idx);
         } else {
             cell.classList.remove('success');
