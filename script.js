@@ -186,11 +186,12 @@ class SudokuGame {
         const numVal = val === '' ? 0 : parseInt(val);
         this.grid[idx] = numVal;
 
-        // Limpa status anterior
+        // Força a reinicialização das classes para disparar animações
         cell.classList.remove('error', 'success');
 
-        // Validação instantânea
         if (numVal !== 0) {
+            // Pequeno delay para garantir que o navegador perceba a remoção da classe e reinicie a animação se necessário
+            void cell.offsetWidth;
             this.validateCell(cell);
         }
     }
