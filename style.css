@@ -137,6 +137,77 @@ header .accent {
     color: white;
 }
 
+/* Controls Guide */
+.controls-guide {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.controls-guide h3 {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.guide-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.key {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: monospace;
+    font-weight: 700;
+    color: var(--accent-color);
+    border: 1px solid var(--glass-border);
+    min-width: 45px;
+}
+
+.desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.color-guide {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.dot.success {
+    background-color: #00ffaa;
+    box-shadow: 0 0 10px #00ffaa;
+}
+
+.dot.error {
+    background-color: #ff4d4d;
+    box-shadow: 0 0 10px #ff4d4d;
+}
+
 /* Sudoku Grid */
 .grid-9x9 {
     display: grid;
