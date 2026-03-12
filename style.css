@@ -147,9 +147,19 @@ header .accent {
 .controls-guide h3 {
     font-size: 1.1rem;
     color: var(--text-secondary);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.5rem;
     text-transform: uppercase;
     letter-spacing: 2px;
+}
+
+.guide-text {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.guide-text strong {
+    color: var(--accent-color);
 }
 
 .guide-grid {
