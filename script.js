@@ -181,6 +181,11 @@ class SudokuGame {
 
         // Clear previous validation status when typing
         cell.classList.remove('error', 'success');
+
+        // Auto-validate to lock the cell if it's correct
+        if (val !== '') {
+            this.validateCell(cell);
+        }
     }
 
     validateCell(cell) {
@@ -191,7 +196,11 @@ class SudokuGame {
 
         if (val === this.solution[idx]) {
             cell.classList.remove('error');
-            cell.classList.add('success');
+            cell.classList.add('success', 'fixed'); // Add fixed to prevent further changes
+            cell.classList.remove('selected');
+            if (this.selectedCell === cell) {
+                this.selectedCell = null;
+            }
             this.checkBlockCompletion(idx);
         } else {
             cell.classList.remove('success');
